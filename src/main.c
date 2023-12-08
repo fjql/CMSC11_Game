@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "game.h"
+
 int main(void) {
-    printf("hello");
-    return 0;
+    Game game;
+
+    game_start(&game);
+
+    game_loop(&game);
 }
