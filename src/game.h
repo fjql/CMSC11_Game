@@ -8,7 +8,8 @@ enum GameState {
     PLAY,
     INVENTORY,
     WIN,
-    LOSE
+    LOSE,
+    END
 };
 
 typedef struct {
@@ -27,7 +28,7 @@ typedef struct {
 
 void game_start(Game*);
 
-void game_update(Game*);
+void game_update(Game*, char);
 void game_draw(Game*);
 
 void game_loop(Game *game);

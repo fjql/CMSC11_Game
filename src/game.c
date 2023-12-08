@@ -21,11 +21,18 @@ void game_start(Game* game) {
     }
 }
 
+void game_update(Game* game, char input) {
+    if (game->state == START) {
+        if (input == 52 || input == 27)
+            game->state = END;
+    }
+}
+
 void game_draw(Game* game) {
     system("clear");
 
     if (game->state == START) {
-        printf("%s", title);
+        printf("%s", title_screen);
     } else if (game->state == PLAY) {
         for (int y = 0; y < MAP_HEIGHT; y++) {
             for (int x = 0; x < MAP_WIDTH; x++) {
@@ -48,10 +55,9 @@ void game_loop(Game* game) {
     game_draw(game);
 
     char input;
-    while (input = getch()) {
-        if (input == 27)
-            break;
-
+    while (game->state != END) {
+        input = getch();
+        game_update(game, input);
         game_draw(game);
     }
 }
