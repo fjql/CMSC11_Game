@@ -22,7 +22,7 @@ void game_start(Game* game) {
 }
 
 void game_draw(Game* game) {
-    //system("clear");
+    system("clear");
 
     if (game->state == START) {
         printf("%s", title);
