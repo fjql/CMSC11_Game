@@ -45,7 +45,7 @@ public class Program
                         map_data.Append('3'); // 3 for dirt/rock
                     }
                     else if (pixel.R == 0 && pixel.G == 0 && pixel.B == 0 && pixel.A == 255) {
-                        map_data.Append('4'); // 4 for entrance/exit ??
+                        map_data.Append("99"); // 4 for entrance/exit ??
                     }
                     else if (pixel.R == 255 && pixel.G == 255 && pixel.B == 255) {
                         map_data.Append("100"); // 100 for player spawn
