@@ -81,8 +81,6 @@ void game_loop(Game* game) {
         game_update(game);
         game_draw(game);
     }
-
-    game_end(game);
 }
 
 void game_end() {

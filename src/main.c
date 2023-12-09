@@ -9,4 +9,6 @@ int main(void) {
     game_start(&game);
 
     game_loop(&game);
+
+    game_end();
 }
