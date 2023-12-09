@@ -52,6 +52,10 @@ void game_draw(Game* game) {
                 char* prnt = " ";
 
                 switch (game->map[y][x]) {
+                    case 0:
+                        if (rand() % 11 < 1)
+                            prnt = "\x1b[1;32m.\x1b[0m";
+                        break;
                     case 1:
                         prnt = "\x1b[1;32mA\x1b[0m";
                         break;
@@ -69,7 +73,7 @@ void game_draw(Game* game) {
                         break;
                 }
 
-                printf("%s ", prnt);
+                printf("%s", prnt);
             }
             printf("\n");
         }
