@@ -26,6 +26,8 @@ typedef struct {
     Player player;
 } Game;
 
+void load_map(Game*, int[MAP_HEIGHT][MAP_WIDTH]);
+
 void game_start(Game*);
 
 void game_update(Game*, char);

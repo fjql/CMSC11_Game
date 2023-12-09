@@ -1,10 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 
 #include "game.h"
 #include "graphics.h"
 #include "maps.h"
+
+void load_map(Game *game, int map[MAP_HEIGHT][MAP_WIDTH]) {
+    for (int y = 0; y < MAP_HEIGHT; y++) {
+        for (int x = 0; x < MAP_WIDTH; x++) {
+            game->map[y][x] = map[y][x];
+            if (game->map[y][x] == 100) {
+                game->player.x = x;
+                game->player.y = y;
+            }
+        }
+    }
+}
 
 void game_start(Game* game) {
     game->state = START;
@@ -15,15 +28,7 @@ void game_start(Game* game) {
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
-    for (int y = 0; y < MAP_HEIGHT; y++) {
-        for (int x = 0; x < MAP_WIDTH; x++) {
-            game->map[y][x] = level_1[y][x];
-            if (game->map[y][x] == 100) {
-                game->player.x = x;
-                game->player.y = y;
-            }
-        }
-    }
+    load_map(game, level_2);
 }
 
 void game_update(Game* game, char input) {
@@ -52,10 +57,6 @@ void game_draw(Game* game) {
                 char* prnt = " ";
 
                 switch (game->map[y][x]) {
-                    case 0:
-                        if (rand() % 11 < 1)
-                            prnt = "\x1b[1;32m.\x1b[0m";
-                        break;
                     case 1:
                         prnt = "\x1b[1;32mA\x1b[0m";
                         break;
@@ -89,8 +90,6 @@ void game_loop(Game* game) {
     char input;
     while (game->state != END) {
         input = getch();
-
-        _sleep(100);
 
         game_update(game, input);
         game_draw(game);
