@@ -64,10 +64,10 @@ void game_update(Game* game) {
 
 void game_draw(Game* game) {
     system("clear");
-    system("clear");
 
     if (game->state == START) {
-        printf("%s", title_screen);
+        system("clear");
+        puts(title_screen);
     } else if (game->state == PLAY) {
         printf("%s\n", separator);
         for (int y = 0; y < MAP_HEIGHT; y++) {
@@ -92,13 +92,13 @@ void game_draw(Game* game) {
                         break;
                 }
 
-                printf("%s", prnt);
+                fputs(prnt, stdout);
             }
-            printf("\n");
+            puts("");
         }
-        printf("%s\n", separator);
+        puts(separator);
         printf("HEALTH:\t%i\nPOS:\t(%i, %i)\n", game->player.health, game->player.x, game->player.y);
-        printf("%s\n", separator);
+        puts(separator);
     }
 }
 
