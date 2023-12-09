@@ -64,8 +64,9 @@ void map_draw(int map[18][80]) {
                     prnt = "\x1b[1;37;0m@\x1b[0m";
                     break;
             }
-            fputs(prnt, stdout);
+
+			fputs(prnt, stdout);
         }
-        puts("");
+		puts("");
     }
 }

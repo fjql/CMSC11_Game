@@ -65,7 +65,7 @@ void game_draw(Game* game) {
         system("clear");
         puts(title_screen);
     } else if (game->state == PLAY) {
-        printf("%s\n", separator);
+        puts(separator);
         map_draw(game->map);
         puts(separator);
         printf("HEALTH:\t%i\nPOS:\t(%i, %i)\n", game->player.health, game->player.x, game->player.y);
