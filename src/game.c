@@ -31,7 +31,9 @@ void game_start(Game* game) {
     load_map(game, level_2);
 }
 
-void game_update(Game* game, char input) {
+void game_update(Game* game) {
+    char input = getch();
+
     if (game->state == START) {
         if (input == 52 || input == 27)
             game->state = END;
@@ -41,6 +43,22 @@ void game_update(Game* game, char input) {
     } else if (game->state == PLAY) {
         if (input == 27)
             game->state = START;
+
+        if (input == 'w' || input == 'a' || input == 's' || input == 'd') {
+            game->map[game->player.y][game->player.x] = 0;
+
+            if (input == 'w' && game->map[game->player.y - 1][game->player.x] == 0)
+                game->player.y--;
+            else if (input == 's' && game->map[game->player.y + 1][game->player.x] == 0)
+                game->player.y++;
+
+            if (input == 'a' && game->map[game->player.y][game->player.x - 1] == 0)
+                game->player.x--;
+            else if (input == 'd' && game->map[game->player.y][game->player.x + 1] == 0)
+                game->player.x++;
+
+            game->map[game->player.y][game->player.x] = 100;
+        }
     }
 }
 
@@ -58,7 +76,7 @@ void game_draw(Game* game) {
 
                 switch (game->map[y][x]) {
                     case 1:
-                        prnt = "\x1b[1;32mA\x1b[0m";
+                        prnt = "\x1b[0;32mA\x1b[0m";
                         break;
                     case 2:
                         prnt = "\x1b[0;34mW\x1b[0m";
@@ -89,9 +107,7 @@ void game_loop(Game* game) {
 
     char input;
     while (game->state != END) {
-        input = getch();
-
-        game_update(game, input);
+        game_update(game);
         game_draw(game);
     }
 

@@ -30,9 +30,9 @@ void load_map(Game*, int[MAP_HEIGHT][MAP_WIDTH]);
 
 void game_start(Game*);
 
-void game_update(Game*, char);
+void game_update(Game*);
 void game_draw(Game*);
 
-void game_loop(Game *game);
+void game_loop(Game*);
 
 void game_end(Game*);
