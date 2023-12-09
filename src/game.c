@@ -28,7 +28,7 @@ void game_start(Game* game) {
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
-    load_map(game, level_2);
+    load_map(game, level_1);
 }
 
 void game_update(Game* game) {
