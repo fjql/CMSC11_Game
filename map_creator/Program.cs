@@ -20,8 +20,6 @@ public class Program
             }
         }
 
-        var maps = new Dictionary<string, string>();
-
         foreach (var img in imgs)
         {
             var map_data = new StringBuilder();
