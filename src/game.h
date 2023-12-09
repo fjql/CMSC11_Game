@@ -1,8 +1,5 @@
 #pragma once
 
-#define MAP_WIDTH   80
-#define MAP_HEIGHT  18 
-
 enum GameState {
     START,
     PLAY,
@@ -22,11 +19,9 @@ typedef struct {
 
 typedef struct {
     enum GameState state;
-    int map[MAP_HEIGHT][MAP_WIDTH];
     Player player;
+    int map[18][80];
 } Game;
-
-void load_map(Game*, int[MAP_HEIGHT][MAP_WIDTH]);
 
 void game_start(Game*);
 
@@ -35,4 +30,4 @@ void game_draw(Game*);
 
 void game_loop(Game*);
 
-void game_end(Game*);
+void game_end();
