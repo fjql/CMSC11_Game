@@ -75,8 +75,6 @@ void game_draw(Game* game) {
 
 void game_loop(Game* game) {
     game_draw(game);
-
-    char input;
     while (game->state != END) {
         game_update(game);
         game_draw(game);
