@@ -68,7 +68,7 @@ void game_draw(Game* game) {
         puts(separator);
         map_draw(game->map);
         puts(separator);
-        printf("HEALTH:\t%i\nPOS:\t(%i, %i)\n", game->player.health, game->player.x, game->player.y);
+        printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\nPOS:\t(%i, %i)\n", game->player.health, game->player.power, game->player.defense, game->player.x, game->player.y);
         puts(separator);
     }
 }
