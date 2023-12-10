@@ -13,7 +13,7 @@ void game_start(Game* game) {
     game->player = (Player){
         2, 2,
         100,
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        10
     };
 
     for (int y = 0; y < 18; y++) {
