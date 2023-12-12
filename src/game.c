@@ -5,6 +5,7 @@
 
 #include "game.h"
 #include "maps.h"
+#include "strs.h"
 #include "graphics.h"
 
 void game_start(Game* game) {
@@ -29,16 +30,16 @@ void game_start(Game* game) {
 void game_update(Game* game) {
     char input = getch();
 
+    if (input == 52 || input == 27)
+        game->state = END;
+
     if (game->state == START) {
-        if (input == 52 || input == 27)
+        if (input == 52)
             game->state = END;
         
         if (input == 49)
             game->state = PLAY;
     } else if (game->state == PLAY) {
-        if (input == 27)
-            game->state = START;
-
         if (input == 'w' || input == 'a' || input == 's' || input == 'd') {
             game->map[game->player.y][game->player.x] = 0;
 
@@ -55,7 +56,20 @@ void game_update(Game* game) {
             game->map[game->player.y][game->player.x] = 100;
         }
 
-        // battle stuff here
+        int random_battle_chance = rand() % 100;
+        if (random_battle_chance < 10) {
+            int name_chance = rand() % (sizeof(names) / sizeof(names[0])) % 4;
+
+            game->enemy = (Enemy) {
+                names[name_chance], "THE SLIME",
+                100, 7, 10
+            };
+
+            system("clear");
+
+            game->state = BATTLE;
+        }
+    } else if (game->state == BATTLE) {
     }
 }
 
@@ -70,6 +84,12 @@ void game_draw(Game* game) {
         map_draw(game->map);
         puts(separator);
         printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\nPOS:\t(%i, %i)\n", game->player.health, game->player.power, game->player.defense, game->player.x, game->player.y);
+        puts(separator);
+    } else if (game->state == BATTLE) {
+        puts(separator);
+        printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
+        puts(separator);
+        printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\n", game->player.health, game->player.power, game->player.defense);
         puts(separator);
     }
 }
