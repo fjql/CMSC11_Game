@@ -4,6 +4,7 @@ enum GameState {
     START,
     PLAY,
     INVENTORY,
+    BATTLE,
     WIN,
     LOSE,
     END
@@ -14,6 +15,18 @@ typedef struct {
 
     int health, power, defense;
 } Player;
+
+typedef struct {
+    char* name;
+
+    int health, power, defense;
+} Enemy;
+
+typedef struct {
+    Enemy* enemy;
+
+} Battle;
+
 
 typedef struct {
     enum GameState state;
