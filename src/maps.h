@@ -43,6 +43,7 @@ int level_2[18][80] = {
 };
 
 void map_draw(int map[18][80]) {
+	// must change, its kinda slow
     for (int y = 0; y < 18; y++) {
         for (int x = 0; x < 80; x++) {
             char *prnt = " ";
