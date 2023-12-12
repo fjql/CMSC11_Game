@@ -3,3 +3,4 @@ bin
 map_creator/bin
 map_creator/obj
 map_creator/maps/*.aseprite
+graphics/*.aseprite
