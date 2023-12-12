@@ -54,6 +54,8 @@ void game_update(Game* game) {
 
             game->map[game->player.y][game->player.x] = 100;
         }
+
+        // battle stuff here
     }
 }
 

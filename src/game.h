@@ -23,12 +23,6 @@ typedef struct {
 } Enemy;
 
 typedef struct {
-    Enemy* enemy;
-
-} Battle;
-
-
-typedef struct {
     enum GameState state;
     Player player;
     int map[18][80];
