@@ -77,6 +77,22 @@ void game_update(Game* game) {
             game->state = BATTLE;
         }
     } else if (game->state == BATTLE) {
+        if (input == 49) {
+            int enemy_block_chance = rand() % 100;
+            if (enemy_block_chance < 10)
+                return;
+                
+            game->enemy.health -= (10 - game->enemy.defense + (rand() % 5)) + (game->player.power / game->player.defense);
+        }
+
+        if (input == 50) {
+            if (game->player.health >= 85) {
+                game->player.health += 100 - game->player.health;
+            } else {
+                game->player.health += 15;
+            }
+        }
+
         if (input == 51) {
             game->state = PLAY;
             game->enemy = (Enemy) {
