@@ -30,7 +30,7 @@ void game_start(Game* game) {
 void game_update(Game* game) {
     char input = getch();
 
-    if (input == 52 || input == 27)
+    if (input == 27)
         game->state = END;
 
     if (game->state == START) {
@@ -89,7 +89,7 @@ void game_draw(Game* game) {
         puts(separator);
         printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
         puts(separator);
-        printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\n", game->player.health, game->player.power, game->player.defense);
+        printf("HEALTH:\t%i\t||\t1. Attack\nPOW:\t%i\t||\t2. Drink Health Potion\nDEF:\t%i\t||\t3. Run\n", game->player.health, game->player.power, game->player.defense);
         puts(separator);
     }
 }
