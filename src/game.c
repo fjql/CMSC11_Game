@@ -57,7 +57,7 @@ void game_update(Game* game) {
         }
 
         int random_battle_chance = rand() % 100;
-        if (random_battle_chance < 10) {
+        if (random_battle_chance < 5) {
             int name_chance = rand() % (sizeof(names) / sizeof(names[0])) % 4;
 
             game->enemy = (Enemy) {
