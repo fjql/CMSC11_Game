@@ -79,10 +79,16 @@ void game_update(Game* game) {
     } else if (game->state == BATTLE) {
         if (input == 49) {
             int enemy_block_chance = rand() % 100;
-            if (enemy_block_chance < 10)
+            if (enemy_block_chance < 5)
                 return;
                 
-            game->enemy.health -= (10 - game->enemy.defense + (rand() % 5)) + (game->player.power / game->player.defense);
+            game->enemy.health -= (game->enemy.defense - (rand() % game->player.power)) + (game->player.power / game->player.defense);
+
+            int player_block_chance = rand() % 100;
+            if (player_block_chance < 10)
+                return;
+            
+            game->player.health -= (game->player.defense - rand() % game->enemy.power) + (game->enemy.power / game->enemy.defense);
         }
 
         if (input == 50) {
@@ -95,6 +101,22 @@ void game_update(Game* game) {
 
         if (input == 51) {
             game->state = PLAY;
+            game->enemy = (Enemy) {
+                "???", "???",
+                100000, 100000, 100000
+            };
+        }
+
+        if (game->enemy.health <= 0) {
+            game->state = PLAY;
+
+            int atk_def_inc = rand() % 10;
+            if (atk_def_inc <= 5) {
+                game->player.power++;
+            } else {
+                game->player.defense++;
+            }
+
             game->enemy = (Enemy) {
                 "???", "???",
                 100000, 100000, 100000
