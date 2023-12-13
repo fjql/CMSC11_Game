@@ -16,6 +16,13 @@ void game_start(Game* game) {
         100, 10, 10
     };
 
+    game->enemy = (Enemy) {
+        "???", "???",
+        100000, 100000, 100000
+    };
+
+    game->map_cur = 0;
+
     for (int y = 0; y < 18; y++) {
         for (int x = 0; x < 80; x++) {
             game->map[y][x] = level_1[y][x];
@@ -70,6 +77,13 @@ void game_update(Game* game) {
             game->state = BATTLE;
         }
     } else if (game->state == BATTLE) {
+        if (input == 51) {
+            game->state = PLAY;
+            game->enemy = (Enemy) {
+                "???", "???",
+                100000, 100000, 100000
+            };
+        }
     }
 }
 
@@ -87,7 +101,13 @@ void game_draw(Game* game) {
         puts(separator);
     } else if (game->state == BATTLE) {
         puts(separator);
-        printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
+        if (game->map_cur == 0) {
+            printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
+        } else if (game->map_cur == 1) {
+            printf(spider, game->enemy.name, game->enemy.type, game->enemy.health);
+        } else {
+            printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
+        }
         puts(separator);
         printf("HEALTH:\t%i\t||\t1. Attack\nPOW:\t%i\t||\t2. Drink Health Potion\nDEF:\t%i\t||\t3. Run\n", game->player.health, game->player.power, game->player.defense);
         puts(separator);

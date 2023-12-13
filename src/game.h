@@ -25,9 +25,12 @@ typedef struct {
 
 typedef struct {
     enum GameState state;
+
+    int map[18][80];
+    int map_cur;
+
     Player player;
     Enemy enemy;
-    int map[18][80];
 } Game;
 
 void game_start(Game*);
