@@ -13,7 +13,7 @@ enum GameState {
 typedef struct {
     int x, y;
 
-    int health, power, defense;
+    int health, power, defense, recover;
 } Player;
 
 typedef struct {

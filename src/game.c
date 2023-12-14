@@ -13,7 +13,7 @@ void game_start(Game* game) {
 
     game->player = (Player){
         2, 2,
-        100, 10, 10
+        100, 10, 10, 5
     };
 
     game->enemy = (Enemy) {
@@ -92,11 +92,16 @@ void game_update(Game* game) {
         }
 
         if (input == 50) {
+            if (game->player.recover == 0)
+                return;
+
             if (game->player.health >= 85) {
                 game->player.health += 100 - game->player.health;
             } else {
                 game->player.health += 15;
             }
+
+            game->player.recover--;
         }
 
         if (input == 51) {
@@ -121,6 +126,8 @@ void game_update(Game* game) {
                 "???", "???",
                 100000, 100000, 100000
             };
+
+            game->player.recover++;
         }
     }
 }
@@ -147,7 +154,7 @@ void game_draw(Game* game) {
             printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
         }
         puts(separator);
-        printf("HEALTH:\t%i\t||\t1. Attack\nPOW:\t%i\t||\t2. Drink Health Potion\nDEF:\t%i\t||\t3. Run\n", game->player.health, game->player.power, game->player.defense);
+        printf("HEALTH:\t%i\t||\t1. Attack\nPOW:\t%i\t||\t2. Recover (%i)\nDEF:\t%i\t||\t3. Run\n", game->player.health, game->player.power, game->player.recover, game->player.defense);
         puts(separator);
     }
 }
