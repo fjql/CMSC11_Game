@@ -21,17 +21,7 @@ void game_start(Game* game) {
         100000, 100000, 100000
     };
 
-    game->map_cur = 0;
-
-    for (int y = 0; y < 18; y++) {
-        for (int x = 0; x < 80; x++) {
-            game->map[y][x] = level_1[y][x];
-            if (game->map[y][x] == 100) {
-                game->player.x = x;
-                game->player.y = y;
-            }
-        }
-    }
+    map_load(game, level_1, 0);
 }
 
 void game_update(Game* game) {
@@ -55,10 +45,20 @@ void game_update(Game* game) {
             else if (input == 's' && game->map[game->player.y + 1][game->player.x] == 0)
                 game->player.y++;
 
-            if (input == 'a' && game->map[game->player.y][game->player.x - 1] == 0)
-                game->player.x--;
-            else if (input == 'd' && game->map[game->player.y][game->player.x + 1] == 0)
-                game->player.x++;
+            if (input == 'a') {
+                if (game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99)
+                    game->player.x--;
+
+                if (game->map[game->player.y][game->player.x - 1] == 99)
+                    map_change(game);
+            }
+            else if (input == 'd') {
+                if (game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99)
+                    game->player.x++;
+
+                if (game->map[game->player.y][game->player.x + 1] == 99)
+                    map_change(game);
+            }
 
             game->map[game->player.y][game->player.x] = 100;
         }
@@ -67,8 +67,17 @@ void game_update(Game* game) {
         if (random_battle_chance < 5) {
             int name_chance = rand() % (sizeof(names) / sizeof(names[0])) % 4;
 
+            char* type;
+
+            if (game->map_cur == 0)
+                type = "THE SLIME";
+            else if (game->map_cur == 1)
+                type = "THE SPIDER";
+            else
+                type = "???";
+
             game->enemy = (Enemy) {
-                names[name_chance], "THE SLIME",
+                names[name_chance], type,
                 100, 7, 10
             };
 

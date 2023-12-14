@@ -42,6 +42,25 @@ int level_2[18][80] = {
 	{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
 };
 
+void map_load(Game* game, int map[18][80], int map_cur) {
+    for (int y = 0; y < 18; y++) {
+        for (int x = 0; x < 80; x++) {
+            game->map[y][x] = map[y][x];
+            if (game->map[y][x] == 100) {
+                game->player.x = x;
+                game->player.y = y;
+            }
+        }
+    }
+
+	game->map_cur = map_cur;
+}
+
+void map_change(Game* game) {
+	if (game->map_cur == 0)
+		map_load(game, level_2, 1);
+}
+
 void map_draw(int map[18][80]) {
 	// must change, its kinda slow
     for (int y = 0; y < 18; y++) {
