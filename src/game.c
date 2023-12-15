@@ -36,6 +36,9 @@ void game_update(Game* game) {
         
         if (input == 49)
             game->state = PLAY;
+    } else if (game->state == LOSE) {
+        if (input == 49)
+            game->state = START;
     } else if (game->state == PLAY) {
         if (input == 'w' || input == 'a' || input == 's' || input == 'd') {
             game->map[game->player.y][game->player.x] = 0;
@@ -138,6 +141,10 @@ void game_update(Game* game) {
 
             game->player.recover++;
         }
+
+        if (game->player.health <= 0) {
+            game_start(game);
+        }
     }
 }
 
@@ -147,6 +154,9 @@ void game_draw(Game* game) {
     if (game->state == START) {
         system("clear");
         puts(title_screen);
+    } else if (game->state == LOSE) {
+        system("clear");
+        puts(lose_screen);
     } else if (game->state == PLAY) {
         puts(separator);
         map_draw(game->map);
