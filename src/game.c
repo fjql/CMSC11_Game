@@ -70,19 +70,24 @@ void game_update(Game* game) {
         if (random_battle_chance < 5) {
             int name_chance = rand() % (sizeof(names) / sizeof(names[0])) % 4;
 
-            char* type;
-
-            if (game->map_cur == 0)
-                type = "THE SLIME";
-            else if (game->map_cur == 1)
-                type = "THE SPIDER";
-            else
-                type = "???";
-
             game->enemy = (Enemy) {
-                names[name_chance], type,
-                100, 7, 10
+                names[name_chance], "",
+                100, 10, 10
             };
+
+            if (game->map_cur == 0) {
+                game->enemy.type = "THE SLIME";
+                game->enemy.power = 7;
+                game->enemy.defense = 10;
+            } else if (game->map_cur == 1) {
+                game->enemy.type = "THE SPIDER";
+                game->enemy.power = 11;
+                game->enemy.defense = 8;
+            } else {
+                game->enemy.type = "???";
+                game->enemy.power = 100000;
+                game->enemy.defense = 100000;
+            }
 
             system("clear");
 
@@ -144,6 +149,7 @@ void game_update(Game* game) {
 
         if (game->player.health <= 0) {
             game_start(game);
+            game->state = LOSE;
         }
     }
 }
@@ -161,7 +167,7 @@ void game_draw(Game* game) {
         puts(separator);
         map_draw(game->map);
         puts(separator);
-        printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\nPOS:\t(%i, %i)\n", game->player.health, game->player.power, game->player.defense, game->player.x, game->player.y);
+        printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\n", game->player.health, game->player.power, game->player.defense);
         puts(separator);
     } else if (game->state == BATTLE) {
         puts(separator);
