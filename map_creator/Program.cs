@@ -42,6 +42,9 @@ public class Program
                     else if (pixel.R == 255 && pixel.G == 255 && pixel.B == 0) {
                         map_data.Append('3'); // 3 for dirt/rock
                     }
+                    else if (pixel.R == 0 && pixel.G == 130 && pixel.B == 0) {
+                        map_data.Append("98");
+                    }
                     else if (pixel.R == 0 && pixel.G == 0 && pixel.B == 0 && pixel.A == 255) {
                         map_data.Append("99"); // 4 for entrance/exit ??
                     }
