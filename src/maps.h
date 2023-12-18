@@ -101,7 +101,7 @@ void map_draw(int map[18][80]) {
                     prnt = "\x1b[0;33m#\x1b[0m";
                     break;
                 case 98:
-                    prnt = "\x1b[1;32mD\x1b[0m";
+                    prnt = "\x1b[1;31mD\x1b[0m";
                     break;
                 case 99:
                     prnt = "\x1b[1;30;0mO\x1b[0m";
