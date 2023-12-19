@@ -31,6 +31,8 @@ typedef struct {
 
     Player player;
     Enemy enemy;
+    Enemy boss1;
+    Enemy boss2;
 } Game;
 
 void game_start(Game*);
