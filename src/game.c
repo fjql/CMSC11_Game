@@ -83,6 +83,10 @@ void game_update(Game* game) {
                 game->enemy.type = "THE SPIDER";
                 game->enemy.power = 11;
                 game->enemy.defense = 8;
+            } else if (game->map_cur == 2) {
+                game->enemy.type = "THE SPIDER";
+                game->enemy.power = 14;
+                game->enemy.defense = 10;
             } else {
                 game->enemy.type = "???";
                 game->enemy.power = 100000;
@@ -99,13 +103,14 @@ void game_update(Game* game) {
             if (enemy_block_chance < 5)
                 return;
                 
-            game->enemy.health -= 10 * (game->player.power / game->player.defense) + (rand() % (game->player.power / 2));
+            //game->enemy.health -= 10 * (game->player.power / game->player.defense) + (rand() % (game->player.power / 2));
+            game->enemy.health -= (game->enemy.defense - game->player.power) + (rand() % game->player.power) * (game->player.power / game->player.defense);
 
             int player_block_chance = rand() % 100;
             if (player_block_chance < 7)
                 return;
             
-            game->player.health -= 10 * (game->enemy.power / game->enemy.defense) + (rand() % (game->enemy.power / 2));
+            //game->player.health -= 10 * (game->enemy.power / game->enemy.defense) + (rand() % (game->enemy.power / 2));
         }
 
         if (input == 50) {
