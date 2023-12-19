@@ -38,7 +38,7 @@ void game_start(Game* game) {
     name_chance = rand() % 17;
     game->boss2.name = names[name_chance];
 
-    map_load(game, level_5, 4);
+    map_load(game, level_1, 0);
 }
 
 void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
@@ -70,7 +70,7 @@ void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
     }
 
     if (input == 51) {
-        if (game->map_cur == 2 || game->map_cur == 4)
+        if (game->state == BOSS)
             return;
 
         game->state = PLAY;
@@ -99,7 +99,6 @@ void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
     }
 
     if (player->health <= 0) {
-        game_start(game);
         game->state = LOSE;
     }
 }
@@ -111,12 +110,12 @@ void game_update(Game* game) {
         game->state = END;
 
     if (game->state == START) {
-        if (input == 52)
-            game->state = END;
-        
+        game_start(game);
         if (input == 49)
             game->state = PLAY;
-    } else if (game->state == LOSE) {
+        else if (input == 50)
+            game->state = ABOUT;
+    } else if (game->state == LOSE || game->state == WIN) {
         if (input == 49)
             game->state = START;
     } else if (game->state == PLAY) {
@@ -220,6 +219,10 @@ void game_draw(Game* game) {
         puts(separator);
         printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\n", game->player.health, game->player.power, game->player.defense);
         puts(separator);
+    } else if (game->state == WIN) {
+        system("cls");
+        int message_chance = rand() % 5;
+        printf(win_screen, win_messages[message_chance], game->player.health, game->player.power, game->player.defense);
     } else if (game->state == BATTLE) {
         puts(separator);
         if (game->map_cur == 0) {

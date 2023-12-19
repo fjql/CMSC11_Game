@@ -6,6 +6,7 @@ enum GameState {
     BOSS,
     BATTLE,
     ABOUT,
+    GALLERY,
     WIN,
     LOSE,
     END
