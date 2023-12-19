@@ -38,6 +38,9 @@ void game_start(Game* game) {
 
 void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
     if (input == 49) {
+        // Enemy has block chance of 5% and player has block chance of 7%.
+        // Damage formula for the game is = 10 * (power / defense) + (random value between 0 and half the power)
+
         int enemy_block_chance = rand() % 100;
         if (enemy_block_chance < 5)
             return;
@@ -52,6 +55,8 @@ void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
     }
 
     if (input == 50) {
+        // Player can recover health during the battle but this is limited.
+
         if (player->recover == 0)
             return;
 
@@ -65,6 +70,8 @@ void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
     }
 
     if (input == 51) {
+        // You can choose not to fight the enemy unless it is a boss.
+
         if (game->state == BOSS)
             return;
 
@@ -76,6 +83,8 @@ void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
     }
 
     if (enemy->health <= 0) {
+        // When you beat an enemy, a random stat increases, your recoveries per battle is incremented, and you can resume playing.
+
         game->state = PLAY;
 
         int atk_def_inc = rand() % 10;
@@ -118,12 +127,14 @@ void game_update(Game* game) {
         if (input == 49)
             game->state = START;
     } else if (game->state == PLAY) {
+        // You can move with the WASD keys.
+        // The next tile/place is checked if it is a wall, a portal to the next level, or a boss.
         if (input == 'w' || input == 'a' || input == 's' || input == 'd') {
             game->map[game->player.y][game->player.x] = 0;
 
-            if (input == 'w' && game->map[game->player.y - 1][game->player.x] == 0)
+            if (input == 'w' && (game->map[game->player.y - 1][game->player.x] == 0 || game->map[game->player.y - 1][game->player.x] == 99 || game->map[game->player.y - 1][game->player.x] == 98))
                 game->player.y--;
-            else if (input == 's' && game->map[game->player.y + 1][game->player.x] == 0)
+            else if (input == 's' && (game->map[game->player.y + 1][game->player.x] == 0 || game->map[game->player.y + 1][game->player.x] == 99 || game->map[game->player.y + 1][game->player.x] == 98))
                 game->player.y++;
 
             if (input == 'a' && (game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99 || game->map[game->player.y][game->player.x - 1] == 98))
@@ -140,18 +151,22 @@ void game_update(Game* game) {
                 map_change(game);
             }
 
+            // If the player is out of a battle for 5 or more turns, they heal some health.
+
             game->player.heal++;
             if (game->player.heal >= 5) {
-                if (game->player.health >= 95) {
+                if (game->player.health >= 97) {
                     game->player.health += 100 - game->player.health;
                 } else {
-                    game->player.health += 5;
+                    game->player.health += 3;
                 }
             }
 
             game->map[game->player.y][game->player.x] = 100;
         }
 
+        // With every move, there is a 5% chance of encountering an enemy.
+        // Here, the enemy is generated according to the map and given specific stats.
         int random_battle_chance = rand() % 100;
         if (random_battle_chance < 5) {
             int name_chance = rand() % 17;
@@ -266,8 +281,8 @@ void game_draw(Game* game) {
 }
 
 void game_loop(Game* game) {
-    game_draw(game);
-    while (game->state != END) {
+    game_draw(game); // preemptive drawing so that screen isn't blank
+    while (game->state != END) { // if the game state isn't END then don't
         game_update(game);
         game_draw(game);
     }

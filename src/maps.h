@@ -121,11 +121,12 @@ void map_load(Game* game, int map[18][80], int map_cur) {
 }
 
 void map_change(Game* game) {
+	// Map changing, prevents player from advancing if the boss isn't defeated.
 	if (game->map_cur == 0)
 		map_load(game, level_2, 1);
 	else if (game->map_cur == 1)
 		map_load(game, level_3, 2);
-	else if (game->map_cur == 2)
+	else if (game->map_cur == 2 && game->boss1.health <= 0)
 		map_load(game, level_4, 3);
 	else if (game->map_cur == 3)
 		map_load(game, level_5, 4);
@@ -134,7 +135,7 @@ void map_change(Game* game) {
 }
 
 void map_draw(int map[18][80]) {
-	// must change, its kinda slow
+	// Goes through the 2d arrays and prints out specific characters for the map.
     for (int y = 0; y < 18; y++) {
         for (int x = 0; x < 80; x++) {
             char *prnt = " ";
