@@ -25,15 +25,20 @@ void game_start(Game* game) {
 
     game->boss1 = (Enemy){
         "???", "THE YOUNG DRAGON",
-        125, 20, 129
+        125, 20, 40
     };
 
     game->boss2 = (Enemy){
         "???", "THE MOM",
-        200, 25, 30
+        200, 30, 60
     };
 
-    map_load(game, level_1, 0);
+    int name_chance = rand() % 17;
+    game->boss1.name = names[name_chance];
+    name_chance = rand() % 17;
+    game->boss2.name = names[name_chance];
+
+    map_load(game, level_5, 4);
 }
 
 void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
@@ -65,6 +70,9 @@ void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
     }
 
     if (input == 51) {
+        if (game->map_cur == 2 || game->map_cur == 4)
+            return;
+
         game->state = PLAY;
         game->enemy = (Enemy) {
             "???", "???",
@@ -120,19 +128,13 @@ void game_update(Game* game) {
             else if (input == 's' && game->map[game->player.y + 1][game->player.x] == 0)
                 game->player.y++;
 
-            if (input == 'a' && (game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99))
+            if (input == 'a' && (game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99 || game->map[game->player.y][game->player.x - 1] == 98))
                 game->player.x--;
-            else if (input == 'd' && (game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99))
+            else if (input == 'd' && (game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99 || game->map[game->player.y][game->player.x + 1] == 98))
                 game->player.x++;
             
-            if (game->map[game->player.y][game->player.x] == 98) {
-                int name_chance = rand() % 17;
-                game->boss1.name = names[name_chance];
-                name_chance = rand() % 17;
-                game->boss2.name = names[name_chance];
-
+            if (game->map[game->player.y][game->player.x] == 98)
                 game->state = BOSS;
-            }
             
             if (game->map[game->player.y][game->player.x] == 99) {
                 if (game->map_cur == 2 && game->boss1.health > 0)
@@ -173,6 +175,14 @@ void game_update(Game* game) {
                 game->enemy.type = "THE SPIDER";
                 game->enemy.power = 14;
                 game->enemy.defense = 10;
+            } else if (game->map_cur == 3) {
+                game->enemy.type = "THE SPIDER";
+                game->enemy.power = 16;
+                game->enemy.defense = 10;
+            } else if (game->map_cur == 4) {
+                game->enemy.type = "THE SLIME";
+                game->enemy.power = 7;
+                game->enemy.defense = 20;
             } else {
                 game->enemy.type = "???";
                 game->enemy.power = 100000;
@@ -221,6 +231,18 @@ void game_draw(Game* game) {
         }
         puts(separator);
         printf("HEALTH:\t%i\t||\t1. Attack\nPOW:\t%i\t||\t2. Recover (%i)\nDEF:\t%i\t||\t3. Run\n", game->player.health, game->player.power, game->player.recover, game->player.defense);
+        puts(separator);
+    } else if (game->state == BOSS) {
+        puts(separator);
+        if (game->map_cur == 2) {
+            printf(bdrag, game->enemy.name, game->boss1.type, game->boss1.health);
+        } else if (game->map_cur == 4) {
+            printf(drag, game->enemy.name, game->boss2.type, game->boss2.health);
+        } else {
+            printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
+        }
+        puts(separator);
+        printf("HEALTH:\t%i\t||\t1. Attack\nPOW:\t%i\t||\t2. Recover (%i)\nDEF:\t%i\t||\n", game->player.health, game->player.power, game->player.recover, game->player.defense);
         puts(separator);
     }
 }
