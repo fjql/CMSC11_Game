@@ -188,9 +188,9 @@ void game_update(Game* game) {
     } else if (game->state == BATTLE) {
         game_battle(game, &game->player, &game->enemy, input);
     } else if (game->state == BOSS) {
-        if (game->map_cur == 3)
+        if (game->map_cur == 2)
             game_battle(game, &game->player, &game->boss1, input);
-        else if (game->map_cur == 5)
+        else if (game->map_cur == 4)
             game_battle(game, &game->player, &game->boss2, input);
     }
 }
