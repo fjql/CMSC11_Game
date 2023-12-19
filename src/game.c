@@ -18,12 +18,82 @@ void game_start(Game* game) {
         100, 10, 10, 5
     };
 
-    game->enemy = (Enemy) {
+    game->enemy = (Enemy){
         "???", "???",
         100000, 100000, 100000
     };
 
+    game->boss1 = (Enemy){
+        "???", "THE YOUNG DRAGON",
+        125, 20, 129
+    };
+
+    game->boss2 = (Enemy){
+        "???", "THE MOM",
+        200, 25, 30
+    };
+
     map_load(game, level_1, 0);
+}
+
+void game_battle(Game* game, Player* player, Enemy* enemy, char input) {
+    if (input == 49) {
+        int enemy_block_chance = rand() % 100;
+        if (enemy_block_chance < 5)
+            return;
+            
+        enemy->health -= floor((float)10 * ((float)player->power / (float)player->defense)) + (rand() % (player->power / 2));
+
+        int player_block_chance = rand() % 100;
+        if (player_block_chance < 7)
+            return;
+        
+        player->health -= 10 * ((float)enemy->power / (float)enemy->defense) + (rand() % (enemy->power / 2));
+    }
+
+    if (input == 50) {
+        if (player->recover == 0)
+            return;
+
+        if (player->health >= 85) {
+            player->health += 100 - player->health;
+        } else {
+            player->health += 15;
+        }
+
+        player->recover--;
+    }
+
+    if (input == 51) {
+        game->state = PLAY;
+        game->enemy = (Enemy) {
+            "???", "???",
+            100000, 100000, 100000
+        };
+    }
+
+    if (enemy->health <= 0) {
+        game->state = PLAY;
+
+        int atk_def_inc = rand() % 10;
+        if (atk_def_inc <= 5) {
+            player->power++;
+        } else {
+            player->defense++;
+        }
+
+        game->enemy = (Enemy) {
+            "???", "???",
+            100000, 100000, 100000
+        };
+
+        player->recover++;
+    }
+
+    if (player->health <= 0) {
+        game_start(game);
+        game->state = LOSE;
+    }
 }
 
 void game_update(Game* game) {
@@ -55,8 +125,20 @@ void game_update(Game* game) {
             else if (input == 'd' && (game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99))
                 game->player.x++;
             
-            if (game->map[game->player.y][game->player.x] == 99)
+            if (game->map[game->player.y][game->player.x] == 98) {
+                int name_chance = rand() % (sizeof(names) / sizeof(names[0]));
+                game->boss1.name = names[name_chance];
+                name_chance = rand() % (sizeof(names) / sizeof(names[0]));
+                game->boss2.name = names[name_chance];
+
+                game->
+            }
+            
+            if (game->map[game->player.y][game->player.x] == 99) {
+                if (game->map_cur == 2 && game->boss1.health > 0)
+                    return;
                 map_change(game);
+            }
 
             game->player.heal++;
             if (game->player.heal >= 5) {
@@ -72,7 +154,7 @@ void game_update(Game* game) {
 
         int random_battle_chance = rand() % 100;
         if (random_battle_chance < 5) {
-            int name_chance = rand() % (sizeof(names) / sizeof(names[0])) % 4;
+            int name_chance = rand() % (sizeof(names) / sizeof(names[0]));
 
             game->enemy = (Enemy) {
                 names[name_chance], "",
@@ -104,63 +186,7 @@ void game_update(Game* game) {
             game->state = BATTLE;
         }
     } else if (game->state == BATTLE) {
-        if (input == 49) {
-            int enemy_block_chance = rand() % 100;
-            if (enemy_block_chance < 5)
-                return;
-                
-            game->enemy.health -= floor((float)10 * ((float)game->player.power / (float)game->player.defense)) + (rand() % (game->player.power / 2));
-
-            int player_block_chance = rand() % 100;
-            if (player_block_chance < 7)
-                return;
-            
-            game->player.health -= 10 * ((float)game->enemy.power / (float)game->enemy.defense) + (rand() % (game->enemy.power / 2));
-        }
-
-        if (input == 50) {
-            if (game->player.recover == 0)
-                return;
-
-            if (game->player.health >= 85) {
-                game->player.health += 100 - game->player.health;
-            } else {
-                game->player.health += 15;
-            }
-
-            game->player.recover--;
-        }
-
-        if (input == 51) {
-            game->state = PLAY;
-            game->enemy = (Enemy) {
-                "???", "???",
-                100000, 100000, 100000
-            };
-        }
-
-        if (game->enemy.health <= 0) {
-            game->state = PLAY;
-
-            int atk_def_inc = rand() % 10;
-            if (atk_def_inc <= 5) {
-                game->player.power++;
-            } else {
-                game->player.defense++;
-            }
-
-            game->enemy = (Enemy) {
-                "???", "???",
-                100000, 100000, 100000
-            };
-
-            game->player.recover++;
-        }
-
-        if (game->player.health <= 0) {
-            game_start(game);
-            game->state = LOSE;
-        }
+        game_battle(game, &game->player, &game->enemy, input);
     }
 }
 

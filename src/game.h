@@ -5,6 +5,7 @@ enum GameState {
     PLAY,
     INVENTORY,
     BATTLE,
+    ABOUT,
     WIN,
     LOSE,
     END
