@@ -50,20 +50,13 @@ void game_update(Game* game) {
             else if (input == 's' && game->map[game->player.y + 1][game->player.x] == 0)
                 game->player.y++;
 
-            if (input == 'a') {
-                if (game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99)
-                    game->player.x--;
-
-                if (game->map[game->player.y][game->player.x - 1] == 99)
-                    map_change(game);
-            }
-            else if (input == 'd') {
-                if (game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99)
-                    game->player.x++;
-
-                if (game->map[game->player.y][game->player.x + 1] == 99)
-                    map_change(game);
-            }
+            if (input == 'a' && game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99)
+                game->player.x--;
+            else if (input == 'd' & game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99)
+                game->player.x++;
+            
+            if (game->map[game->player.y][game->player.x] == 99)
+                map_change(game);
 
             game->player.heal++;
             if (game->player.heal >= 5) {
@@ -104,7 +97,7 @@ void game_update(Game* game) {
                 game->enemy.defense = 100000;
             }
 
-            system("clear");
+            system("cls");
 
             game->player.heal = 0;
 
@@ -172,13 +165,13 @@ void game_update(Game* game) {
 }
 
 void game_draw(Game* game) {
-    system("clear");
+    system("cls");
 
     if (game->state == START) {
-        system("clear");
+        system("cls");
         puts(title_screen);
     } else if (game->state == LOSE) {
-        system("clear");
+        system("cls");
         puts(lose_screen);
     } else if (game->state == PLAY) {
         puts(separator);
@@ -210,5 +203,5 @@ void game_loop(Game* game) {
 }
 
 void game_end() {
-    system("clear");
+    system("cls");
 }
