@@ -14,6 +14,7 @@ void game_start(Game* game) {
 
     game->player = (Player){
         2, 2,
+        0,
         100, 10, 10, 5
     };
 
@@ -64,6 +65,15 @@ void game_update(Game* game) {
                     map_change(game);
             }
 
+            game->player.heal++;
+            if (game->player.heal >= 5) {
+                if (game->player.health >= 95) {
+                    game->player.health += 100 - game->player.health;
+                } else {
+                    game->player.health += 5;
+                }
+            }
+
             game->map[game->player.y][game->player.x] = 100;
         }
 
@@ -95,6 +105,8 @@ void game_update(Game* game) {
             }
 
             system("clear");
+
+            game->player.heal = 0;
 
             game->state = BATTLE;
         }
