@@ -50,9 +50,9 @@ void game_update(Game* game) {
             else if (input == 's' && game->map[game->player.y + 1][game->player.x] == 0)
                 game->player.y++;
 
-            if (input == 'a' && game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99)
+            if (input == 'a' && (game->map[game->player.y][game->player.x - 1] == 0 || game->map[game->player.y][game->player.x - 1] == 99))
                 game->player.x--;
-            else if (input == 'd' & game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99)
+            else if (input == 'd' && (game->map[game->player.y][game->player.x + 1] == 0 || game->map[game->player.y][game->player.x + 1] == 99))
                 game->player.x++;
             
             if (game->map[game->player.y][game->player.x] == 99)
