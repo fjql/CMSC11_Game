@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <conio.h>
 
 #include "game.h"
@@ -103,13 +104,13 @@ void game_update(Game* game) {
             if (enemy_block_chance < 5)
                 return;
                 
-            game->enemy.health -= 10 * (game->player.power / game->player.defense) + (rand() % (game->player.power / 2));
+            game->enemy.health -= floor((float)10 * ((float)game->player.power / (float)game->player.defense)) + (rand() % (game->player.power / 2));
 
             int player_block_chance = rand() % 100;
             if (player_block_chance < 7)
                 return;
             
-            game->player.health -= 10 * (game->enemy.power / game->enemy.defense) + (rand() % (game->enemy.power / 2));
+            game->player.health -= 10 * ((float)game->enemy.power / (float)game->enemy.defense) + (rand() % (game->enemy.power / 2));
         }
 
         if (input == 50) {
