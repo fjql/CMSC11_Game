@@ -3,7 +3,7 @@
 enum GameState {
     START,
     PLAY,
-    INVENTORY,
+    BOSS,
     BATTLE,
     ABOUT,
     WIN,
@@ -39,6 +39,7 @@ typedef struct {
 } Game;
 
 void game_start(Game*);
+void game_battle(Game*, Player*, Enemy*, char);
 
 void game_update(Game*);
 void game_draw(Game*);

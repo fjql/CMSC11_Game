@@ -13,9 +13,9 @@ char names[100][10] = {
     "FUSILLI",
     "KIMCHI",
     "SAUERKRAUT",
-    "MU",
     "PICKLES",
     "ATCHARA",
     "YOGURT",
-    "KEFIR"
+    "KEFIR",
+    "HUMBA"
 };

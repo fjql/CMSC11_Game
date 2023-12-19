@@ -126,12 +126,12 @@ void game_update(Game* game) {
                 game->player.x++;
             
             if (game->map[game->player.y][game->player.x] == 98) {
-                int name_chance = rand() % (sizeof(names) / sizeof(names[0]));
+                int name_chance = rand() % 17;
                 game->boss1.name = names[name_chance];
-                name_chance = rand() % (sizeof(names) / sizeof(names[0]));
+                name_chance = rand() % 17;
                 game->boss2.name = names[name_chance];
 
-                game->
+                game->state = BOSS;
             }
             
             if (game->map[game->player.y][game->player.x] == 99) {
@@ -154,7 +154,7 @@ void game_update(Game* game) {
 
         int random_battle_chance = rand() % 100;
         if (random_battle_chance < 5) {
-            int name_chance = rand() % (sizeof(names) / sizeof(names[0]));
+            int name_chance = rand() % 17;
 
             game->enemy = (Enemy) {
                 names[name_chance], "",
@@ -187,6 +187,11 @@ void game_update(Game* game) {
         }
     } else if (game->state == BATTLE) {
         game_battle(game, &game->player, &game->enemy, input);
+    } else if (game->state == BOSS) {
+        if (game->map_cur == 3)
+            game_battle(game, &game->player, &game->boss1, input);
+        else if (game->map_cur == 5)
+            game_battle(game, &game->player, &game->boss2, input);
     }
 }
 
