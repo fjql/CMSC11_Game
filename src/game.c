@@ -24,19 +24,14 @@ void game_start(Game* game) {
     };
 
     game->boss1 = (Enemy){
-        "???", "THE YOUNG DRAGON",
+        "DEEZ", "THE YOUNG DRAGON",
         125, 20, 40
     };
 
     game->boss2 = (Enemy){
-        "???", "THE MOM",
+        "LIGMA", "THE MOM",
         200, 30, 60
     };
-
-    int name_chance = rand() % 17;
-    game->boss1.name = names[name_chance];
-    name_chance = rand() % 17;
-    game->boss2.name = names[name_chance];
 
     map_load(game, level_1, 0);
 }
@@ -115,7 +110,11 @@ void game_update(Game* game) {
             game->state = PLAY;
         else if (input == 50)
             game->state = ABOUT;
-    } else if (game->state == LOSE || game->state == WIN) {
+        else if (input == 51)
+            game->state = GALLERY;
+        else if (input == 52)
+            game->state = END;
+    } else if (game->state == LOSE || game->state == WIN || game->state == ABOUT || game->state == GALLERY) {
         if (input == 49)
             game->state = START;
     } else if (game->state == PLAY) {
@@ -210,24 +209,40 @@ void game_draw(Game* game) {
     if (game->state == START) {
         system("cls");
         puts(title_screen);
+    } else if (game->state == WIN) {
+        system("cls");
+        int message_chance = rand() % 5;
+        printf(win_screen, win_messages[message_chance], game->player.health, game->player.power, game->player.defense);
     } else if (game->state == LOSE) {
         system("cls");
         puts(lose_screen);
+    } else if (game->state == ABOUT) {
+        system("cls");
+        puts(about_screen);
+    } else if (game->state == GALLERY) {
+        system("cls");
+        puts(separator);
+        printf(slime, "FRED", "THE SLIME", 100);
+        puts(separator);
+        printf(spider, "LESTER", "THE SPIDER", 100);
+        puts(separator);
+        printf(bdrag, "TROY", "THE YOUNG DRAGON", 100);
+        puts(separator);
+        printf(drag, "FRED", "THE MOM", 100);
+        puts(separator);
+        puts("Press 1 to Go Back");
+        puts(separator);
     } else if (game->state == PLAY) {
         puts(separator);
         map_draw(game->map);
         puts(separator);
         printf("HEALTH:\t%i\nPOW:\t%i\nDEF:\t%i\n", game->player.health, game->player.power, game->player.defense);
         puts(separator);
-    } else if (game->state == WIN) {
-        system("cls");
-        int message_chance = rand() % 5;
-        printf(win_screen, win_messages[message_chance], game->player.health, game->player.power, game->player.defense);
     } else if (game->state == BATTLE) {
         puts(separator);
-        if (game->map_cur == 0) {
+        if (game->map_cur == 0 || game->map_cur == 4) {
             printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
-        } else if (game->map_cur == 1) {
+        } else if (game->map_cur == 1 || game->map_cur == 2 || game->map_cur == 3) {
             printf(spider, game->enemy.name, game->enemy.type, game->enemy.health);
         } else {
             printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
