@@ -268,9 +268,9 @@ void game_draw(Game* game) {
     } else if (game->state == BOSS) {
         puts(separator);
         if (game->map_cur == 2) {
-            printf(bdrag, game->enemy.name, game->boss1.type, game->boss1.health);
+            printf(bdrag, game->boss1.name, game->boss1.type, game->boss1.health);
         } else if (game->map_cur == 4) {
-            printf(drag, game->enemy.name, game->boss2.type, game->boss2.health);
+            printf(drag, game->boss2.name, game->boss2.type, game->boss2.health);
         } else {
             printf(slime, game->enemy.name, game->enemy.type, game->enemy.health);
         }
